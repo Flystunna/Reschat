@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+     <!-- Bootstrap -->
+    <link href="style/bootstrap-3.3.6-dist/css/bootstrap.min.css" rel="stylesheet"/>
+      <script src="Script/jQuery/Script.js"></script>
+     <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="style/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+    <style>
+        .h {
+        font-family:Arial;
+        font-size:medium;
+         
+        }
+        .g {
+            width:auto;
+        }
+    </style>
+    
+    <title>Create Notes</title>
+</head>
+<body>
+    <div class="container">
+     
+              <h3>Create Notes</h3>
+         <label class="h"> All files should be saved as .txt or .doc format.</label>
+              <table>
+<tr><td></td></tr>
+<tr>
+<td colspan="3">
+<textarea id="inputTextToSave" placeholder="Write a note"  class="form-control" rows="10" cols="80"></textarea>
+</td>
+</tr>
+<tr>
+<td>Filename to Save As:</td>
+<td><input class="form-control" id="inputFileNameToSaveAs"/></td>
+<td><button class="form-control" onclick="saveTextAsFile()">Save Text to File</button></td>
+</tr>
+      
+<tr>
+<td>Select a File to Load:</td>
+<td><input type="file" class="form-control" id="fileToLoad"/></td>
+<td><button class="form-control" onclick="loadFileAsText()">Load Selected File</button><td>
+</tr>
+</table>
+         </div>
+        </div>
+<script type="text/javascript">
+    function saveTextAsFile() {
+        var textToSave = document.getElementById("inputTextToSave").value;
+        var textToSaveAsBlob = new Blob([textToSave], { type: "text/plain" });
+        var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+        var fileNameToSaveAs = document.getElementById("inputFileNameToSaveAs").value;
+        var downloadLink = document.createElement("a");
+        downloadLink.download = fileNameToSaveAs;
+        downloadLink.innerHTML = "Download File";
+        downloadLink.href = textToSaveAsURL;
+        downloadLink.onclick = destroyClickedElement;
+        downloadLink.style.display = "none";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+    }
+    function destroyClickedElement(event) {
+        document.body.removeChild(event.target);
+    }
+    function loadFileAsText() {
+        var fileToLoad = document.getElementById("fileToLoad").files[0];
+        var fileReader = new FileReader();
+        fileReader.onload = function (fileLoadedEvent) {
+            var textFromFileLoaded = fileLoadedEvent.target.result;
+            document.getElementById("inputTextToSave").value = textFromFileLoaded;
+        };
+        fileReader.readAsText(fileToLoad, "UTF-8");
+    }
+</script>
+         
+</body>
+</html>

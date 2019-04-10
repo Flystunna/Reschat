@@ -1,0 +1,108 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="bootstrap/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="bootstrap/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <style>
+        .h {
+        font-family:Arial;
+        font-size:medium;
+         
+        }
+        .g {
+            width:auto;
+        }
+    </style>
+    
+    <title>Create Notes</title>
+</head>
+<body>
+     <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">MedChat</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <div class="navbar-form navbar-right">
+              <ul class="nav navbar-nav navbar-right">
+        <li><a href="Registration.aspx"><span class="glyphicon glyphicon-user"></span> Create a new account</a></li>
+                  <li><a href="chat.aspx"><span class="glyphicon glyphicon-phone"></span>Chat</a></li>
+      </ul> 
+          </div>
+               
+        </div><!--/.navbar-collapse -->
+      </div>
+    </nav>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p>
+        <br />
+        <br />
+    </p>
+    <div>
+    <div class="container">
+              <h3>Create Notes</h3>
+         <label class="h"> All files should be saved as .txt or .doc format.</label>
+              <table>
+<tr><td></td></tr>
+<tr>
+<td colspan="3">
+<textarea id="inputTextToSave" placeholder="Write a note"  class="form-control" rows="10" cols="80"></textarea>
+</td>
+</tr>
+<tr>
+<td>Filename to Save As:</td>
+<td><input class="form-control" id="inputFileNameToSaveAs"/></td>
+<td><button class="form-control" onclick="saveTextAsFile()">Save Text to File</button></td>
+</tr>
+      
+<tr>
+<td>Select a File to Load:</td>
+<td><input type="file" class="form-control" id="fileToLoad"/></td>
+<td><button class="form-control" onclick="loadFileAsText()">Load Selected File</button><td>
+</tr>
+</table>
+         </div>
+        </div>
+<script type="text/javascript">
+    function saveTextAsFile() {
+        var textToSave = document.getElementById("inputTextToSave").value;
+        var textToSaveAsBlob = new Blob([textToSave], { type: "text/plain" });
+        var textToSaveAsURL = window.URL.createObjectURL(textToSaveAsBlob);
+        var fileNameToSaveAs = document.getElementById("inputFileNameToSaveAs").value;
+        var downloadLink = document.createElement("a");
+        downloadLink.download = fileNameToSaveAs;
+        downloadLink.innerHTML = "Download File";
+        downloadLink.href = textToSaveAsURL;
+        downloadLink.onclick = destroyClickedElement;
+        downloadLink.style.display = "none";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+    }
+    function destroyClickedElement(event) {
+        document.body.removeChild(event.target);
+    }
+    function loadFileAsText() {
+        var fileToLoad = document.getElementById("fileToLoad").files[0];
+        var fileReader = new FileReader();
+        fileReader.onload = function (fileLoadedEvent) {
+            var textFromFileLoaded = fileLoadedEvent.target.result;
+            document.getElementById("inputTextToSave").value = textFromFileLoaded;
+        };
+        fileReader.readAsText(fileToLoad, "UTF-8");
+    }
+</script>
+         
+</body>
+</html>
